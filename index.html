@@ -2,14 +2,17 @@
 <html>
 
 <head>
+  <!-- Meta tags for document settings -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <!-- Title of the page -->
   <title>ASC</title>
 
+  <!-- External scripts and stylesheets -->
   <script src="lesson.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="style.css" rel="stylesheet" />
@@ -20,21 +23,26 @@
 </head>
 
 <body class="sub_page">
+  <!-- Vue.js app container -->
   <div id="app">
+    <!-- Header section -->
     <div class="hero_area">
       <div class="hero_bg_box"></div>
       <header class="header_section">
         <div class="container-fluid">
+          <!-- Navigation bar -->
           <nav class="navbar navbar-expand-lg custom_nav-container ">
             <a class="navbar-brand" href="index.html">
               <span>ASC</span>
             </a>
+            <!-- Toggle button for responsive navigation -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav">
+                <!-- Shopping cart button -->
                 <li class="nav-item active">
                   <form class="form-inline">
                     <button @click.prevent="toggleCartVisibility" :disabled="cart.length === 0">
@@ -49,19 +57,23 @@
       </header>
     </div>
 
+    <!-- Slider section -->
     <section class="slider_section">
+      <!-- Carousel for displaying slides -->
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
+          <!-- Carousel item with content -->
           <div class="carousel-item active">
             <div class="container">
               <div class="row">
+                <!-- Left column with details -->
                 <div class="col-md-6">
                   <div class="detail-box">
                     <h2>
                       After School <br>
                       Classes
                     </h2>
-                    <p>
+                    <p style="color: black;">
                       Welcome to After School Classes!
                       Your source for a productive and fun way to utilize your time.
                       We offer courses, which allows students and their parents to buy after school classes and
@@ -70,9 +82,10 @@
                     </p>
                   </div>
                 </div>
+                <!-- Right column with image -->
                 <div class="col-md-6">
                   <div class="img-box">
-                    <img src="slider-img.png" alt="">
+                    <img src="/images/slider-img.png" alt="">
                   </div>
                 </div>
               </div>
@@ -82,6 +95,7 @@
       </div>
     </section>
 
+    <!-- Service section with classes -->
     <section class="service_section layout_padding" v-if="!showProduct">
       <div class="service_container">
         <div class="container">
@@ -90,7 +104,7 @@
             <p>Please take a look at the courses that we proudly offer, here at ASC</p>
           </div>
           <br>
-
+          <!-- Sorting options for lessons -->
           <div>
             <label for="sortAttribute">Sort by:</label>
             <select id="sortAttribute" v-model="sortAttribute">
@@ -106,12 +120,13 @@
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
+            <!-- Button to trigger sorting -->
             <button @click="sortLessons">Sort</button>
           </div>
           <br>
-
-          <input type="text" v-model="searchTerm" @input="searchLessons" placeholder="Search lessons">
-
+          <!-- Search input for lessons -->
+          <input type="text" v-model="searchTerm" @input="fetchSearchResults" placeholder="Search lessons" />
+          <!-- Displaying lessons -->
           <div v-for="lesson in filteredLessons" :key="lesson.id">
             <figure>
               <img v-bind:src="lesson.image" alt="" width="100" height="90">
@@ -121,6 +136,7 @@
             <p v-text="'Location: ' + lesson.location"></p>
             <p v-text="'Price: ' + lesson.price"></p>
             <p v-text="'Spaces: ' + lesson.spaces"></p>
+            <!-- Button to add lesson to cart -->
             <button @click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">Add To Cart</button>
             <span v-if="lesson.availableInventory === 0">All out!</span>
           </div>
@@ -128,17 +144,21 @@
       </div>
     </section>
 
+    <!-- Cart section -->
     <section id="cartSection" v-if="showProduct" class="team_section layout_padding"></section>
 
+    <!-- Team section for displaying cart items and checkout form -->
     <section v-if="showProduct" class="team_section layout_padding">
       <div class="container-fluid">
         <div class="heading_container heading_center">
           <p>Your Cart</p> <br>
 
+          <!-- Display message when cart is empty -->
           <div v-if="cart.length === 0">
             <p>Your cart is empty.</p>
           </div>
 
+          <!-- Display cart items -->
           <div v-else>
             <div v-for="cartItem in cart" :key="cartItem.id">
               <div>
@@ -149,18 +169,22 @@
                 <p>{{ 'Location: ' + cartItem.location }}</p>
                 <p>{{ 'Price: ' + cartItem.price }}</p>
                 <p>{{ 'Spaces: ' + cartItem.spaces }}</p>
+                <!-- Button to remove item from cart -->
                 <button @click="removeFromCart(cartItem.id)">Remove</button>
               </div>
             </div>
           </div>
 
           <br>
+          <!-- Checkout form -->
           <form id="checkoutForm">
             <input type="text" id="name" placeholder="Enter your Name" pattern="[A-Za-z ]+" required
               v-model="order.firstName">
             <input type="tel" id="phone" placeholder="Enter your Phone number" pattern="[0-9]+" required
               v-model="order.lastName">
+            <!-- Button to trigger checkout -->
             <button @click="checkout" :disabled="!isCheckoutEnabled">Checkout</button>
+            <!-- Display message after successful order submission -->
             <p v-if="orderSubmitted">Order submitted!</p>
           </form>
         </div>
@@ -168,33 +192,82 @@
     </section>
   </div>
 
+  <!-- Vue.js and Axios scripts -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Vue.js script for handling interactions -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Create a new Vue instance
       var webstore = new Vue({
+        // Connect the instance to an element in the HTML with id 'app'
         el: '#app',
+        // Data properties for storing the state of the application
         data: {
-          showProduct: false,
-          products: lessons,
-          searchTerm: '',
+          showProduct: false,       // Flag to control visibility of product details
+          products: lessons,        // Array to store lesson/product data
+          searchTerm: '',           // User input for search
           order: {
             method: 'Home',
           },
-          cart: [],
-          orderSubmitted: false,
-          sortAttribute: '',
-          sortOrder: '',
+          cart: [],                 // Array to store items in the cart
+          orderSubmitted: false,    // Flag to track whether an order has been submitted
+          sortAttribute: '',        // Attribute for sorting lessons
+          sortOrder: '',            // Order for sorting lessons
         },
+        // Created lifecycle hook - called when the Vue instance is created
+        created: function () {
+          console.log("Requesting data from server");
+          // Fetch initial data from the server when the component is created
+          fetch('http://localhost:3000/collection/products')
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (json) {
+              webstore.products = json;
+              console.log(json);
+            });
+        },
+        // Methods to perform various actions in the application
         methods: {
+          // Method to place an order by sending a request to the server
+          placeOrder: function (order) {
+            fetch('http://localhost:3000/collection/order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(order),
+            })
+              .then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Failed to place order');
+                }
+                return response.json();
+              })
+              .then(function (data) {
+                console.log('Order placed successfully:', data.orderId);
+                // Handle success (e.g., show confirmation to the user)
+              })
+              .catch(function (error) {
+                console.error('Error placing order:', error);
+                // Handle error (e.g., show error message to the user)
+              });
+          },
+          // Method to fetch all lessons from the server
           fetchLessons: function () {
             fetch('/lessons')
-              .then(response => response.json())
-              .then(data => {
-                this.products = data;
+              .then(function (response) {
+                return response.json();
               })
-              .catch(error => console.error('Error fetching lessons:', error));
+              .then(function (data) {
+                webstore.products = data;
+              })
+              .catch(function (error) {
+                console.error('Error fetching lessons:', error);
+              });
           },
+          // Method to toggle cart visibility and scroll to the cart section
           toggleCartVisibility: function () {
             const wasVisible = this.showProduct;
             this.showProduct = !this.showProduct;
@@ -211,6 +284,7 @@
               }
             }
           },
+          // Method to add a lesson to the cart
           addToCart: function (product) {
             console.log('addToCart called', product);
             if (product.availableInventory > 0) {
@@ -219,20 +293,25 @@
               product.spaces--;
             }
           },
+          // Method to sort lessons based on selected attributes and order
           sortLessons: function () {
             if (this.sortAttribute && this.sortOrder) {
-              this.products.sort((a, b) => {
-                const valueA = a[this.sortAttribute];
-                const valueB = b[this.sortAttribute];
-                return this.sortOrder === 'asc' ? (valueA < valueB ? -1 : 1) : (valueA > valueB ? -1 : 1);
+              this.products.sort(function (a, b) {
+                const valueA = a[webstore.sortAttribute];
+                const valueB = b[webstore.sortAttribute];
+                return webstore.sortOrder === 'asc' ? (valueA < valueB ? -1 : 1) : (valueA > valueB ? -1 : 1);
               });
             }
           },
+          // Method to check if a lesson can be added to the cart
           canAddToCart: function (product) {
             return product.spaces > 0;
           },
+          // Method to remove a lesson from the cart
           removeFromCart: function (lessonId) {
-            const lessonIndex = this.cart.findIndex(item => item.id === lessonId);
+            const lessonIndex = this.cart.findIndex(function (item) {
+              return item.id === lessonId;
+            });
             if (lessonIndex !== -1) {
               const removedLesson = this.cart.splice(lessonIndex, 1)[0];
               const originalLesson = this.getProductById(lessonId);
@@ -242,86 +321,150 @@
               }
             }
           },
+          // Method to get details of a lesson by its ID
           getLessonDetails: function (lessonId) {
             const lesson = this.getProductById(lessonId);
             return lesson ? lesson : null;
           },
+          // Method to get a lesson by its ID from the products array
           getProductById: function (productId) {
-            return this.products.find(product => product.id === productId);
+            return this.products.find(function (product) {
+              return product.id === productId;
+            });
           },
+          // Method to proceed to checkout and clear the cart
           proceedToCheckout: function () {
             console.log('Proceeding to checkout...');
             this.cart = [];
             this.showProduct = true;
           },
+          // Method to handle the checkout process
           checkout: function () {
             if (this.isValidName() && this.isValidPhone()) {
-              // Extract lesson IDs from the cart
-              const lessonIds = this.cart.map(item => item.id);
+              const lessonIds = this.cart.map(function (item) {
+                return item.id;
+              });
 
-              // Prepare order data
               const orderData = {
-                name: this.order.firstName,
-                phoneNumber: this.order.lastName,
+                name: webstore.order.firstName,
+                phoneNumber: webstore.order.lastName,
                 lessonIds: lessonIds,
-                numberOfSpace: this.cart.length,
+                numberOfSpace: webstore.cart.length,
               };
 
-              // Send the order data to the server
-              this.saveOrder(orderData);
+              webstore.saveOrder(orderData);
 
-              // Clear cart and show order submitted message
+              // Update available space for each lesson in the cart
+              this.cart.forEach(function (cartItem) {
+                webstore.updateLessonSpace(cartItem.id);
+              });
+
               this.cart = [];
               this.showProduct = true;
               this.orderSubmitted = true;
             }
           },
+          // Method to save the order on the server using Axios
           saveOrder: function (orderData) {
             axios.post('/orders', orderData)
-              .then(response => {
+              .then(function (response) {
                 console.log('Order submitted successfully!', response.data);
               })
-              .catch(error => {
+              .catch(function (error) {
                 console.error('Error submitting order:', error);
               });
           },
+          // Method to update available lesson space on the server using fetch
+          updateLessonSpace: function (lessonId) {
+            fetch(`/lessons/${lessonId}/update-space`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              // Additional data if needed
+              body: JSON.stringify({ /* additional data */ }),
+            })
+              .then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Failed to update lesson space');
+                }
+                return response.json();
+              })
+              .then(function (data) {
+                console.log('Lesson space updated successfully:', data);
+              })
+              .catch(function (error) {
+                console.error('Error updating lesson space:', error);
+              });
+          },
+          // Method to check if the entered name is valid
           isValidName: function () {
             const nameRegex = /^[A-Za-z ]+$/;
-            return nameRegex.test(this.order.firstName);
+            return nameRegex.test(webstore.order.firstName);
           },
+          // Method to check if the entered phone number is valid
           isValidPhone: function () {
             const phoneRegex = /^[0-9]+$/;
-            return phoneRegex.test(this.order.lastName);
+            return phoneRegex.test(webstore.order.lastName);
+          },
+          // Method to perform a search based on the entered term
+          search: function () {
+            const term = this.searchTerm.toLowerCase();
+            this.products = lessons.filter(function (lesson) {
+              return lesson.subject.toLowerCase().includes(term) || lesson.location.toLowerCase().includes(term);
+            });
+          },
+          // Method to fetch search results from the server
+          fetchSearchResults: function () {
+            fetch(`/search?term=${this.searchTerm}`)
+              .then(function (response) {
+                return response.json();
+              })
+              .then(function (data) {
+                webstore.products = data;
+              })
+              .catch(function (error) {
+                console.error('Error fetching search results:', error);
+              });
           },
         },
+        // Computed properties for dynamic data
         computed: {
+          // Computed property for filtered lessons based on search term
           filteredLessons: function () {
             const term = this.searchTerm.toLowerCase();
-            return this.products.filter(
-              (lesson) =>
-                lesson.subject.toLowerCase().includes(term) ||
-                lesson.location.toLowerCase().includes(term)
-            );
+            return this.products.filter(function (lesson) {
+              return lesson.subject.toLowerCase().includes(term) || lesson.location.toLowerCase().includes(term);
+            });
           },
+          // Computed property to check if checkout is enabled
           isCheckoutEnabled: function () {
             return this.cart.length > 0 && this.isValidName() && this.isValidPhone();
           },
+          // Computed property for cart item count
           cartItemCount: function () {
             return this.cart.length || '';
           },
+          // Computed property for total spaces in the cart
           totalSpacesInCart: function () {
             return this.cart.length;
           },
+          // Computed property for sorted products
           sortedProducts: function () {
             return this.products;
           },
         },
-        created() {
-          this.fetchLessons(); // Fetch lessons on component creation
+        // Watcher to perform actions on changes in searchTerm
+        watch: {
+          searchTerm: function () {
+            // Call the method to fetch search results
+            this.fetchSearchResults();
+          },
         },
       });
     });
   </script>
+  </div>
 </body>
 
 </html>
