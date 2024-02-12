@@ -6,7 +6,7 @@ var lessons = [
         location: "Russia",
         price: 55,
         spaces: 5,
-        image: "s1.png", // Update the path to your image
+        image: "images/s1.png", // Update the path to your image
         availableInventory: 10,
     },
     {
@@ -15,7 +15,7 @@ var lessons = [
         location: "Spain",
         price: 80,
         spaces: 10,
-        image: "s2.png", // Update the path to your image
+        image: "images/s2.png", // Update the path to your image
         availableInventory: 10,
     },
     {
@@ -24,7 +24,7 @@ var lessons = [
         location: "Germany",
         price: 50,
         spaces: 5,
-        image: "s12.png",
+        image: "images/s12.png",
         availableInventory: 10,
     },
     {
@@ -33,7 +33,7 @@ var lessons = [
         location: "Mexico",
         price: 10,
         spaces: 8,
-        image: "s11.png",
+        image: "images/s11.png",
         availableInventory: 10,
     },
     {
@@ -42,7 +42,7 @@ var lessons = [
         location: "London",
         price: 50,
         spaces: 7,
-        image: "s10.png",
+        image: "images/s10.png",
         availableInventory: 10,
     },
     {
@@ -51,7 +51,7 @@ var lessons = [
         location: "Turkey",
         price: 45,
         spaces: 8,
-        image: "s9.png",
+        image: "images/s9.png",
         availableInventory: 10,
     },
     {
@@ -60,7 +60,7 @@ var lessons = [
         location: "Azerbaijan",
         price: 70,
         spaces: 5,
-        image: "s8.png",
+        image: "images/s8.png",
         availableInventory: 10,
     },
     {
@@ -69,7 +69,7 @@ var lessons = [
         location: "Georgia",
         price: 90,
         spaces: 12,
-        image: "s7.png",
+        image: "images/s7.png",
         availableInventory: 10,
     },
     {
@@ -78,7 +78,7 @@ var lessons = [
         location: "Argentina",
         price: 20,
         spaces: 9,
-        image: "s6.png",
+        image: "images/s6.png",
         availableInventory: 10,
     },
     {
@@ -87,7 +87,7 @@ var lessons = [
         location: "Italy",
         price: 50,
         spaces: 6,
-        image: "s5.png",
+        image: "images/s5.png",
         availableInventory: 10,
     },
 ];
